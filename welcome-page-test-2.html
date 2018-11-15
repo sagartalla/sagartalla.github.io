@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>JS Bin</title>
+  <title>Tila</title>
   <script src="https://cdn.jsdelivr.net/npm/matter-js@0.14.2/build/matter.min.js"></script>
   <style>
     body {
@@ -197,11 +197,13 @@ Example.sprites = function(w, h) {
   var Engine = Matter.Engine,
       Render = Matter.Render,
       Runner = Matter.Runner,
+      Composite = Matter.Composite,
       Composites = Matter.Composites,
       Common = Matter.Common,
       MouseConstraint = Matter.MouseConstraint,
       Mouse = Matter.Mouse,
       World = Matter.World,
+      Events = Matter.Events,
       Bodies = Matter.Bodies;
 
   // create engine
@@ -228,18 +230,21 @@ Example.sprites = function(w, h) {
   Runner.run(runner, engine);
 
   // add bodies
-  var offset = 10,
+  var offset = 1,
       options = {
-          isStatic: true
+          isStatic: true,
+          render: {
+            fillStyle: '#000',
+          }
       };
 
   world.bodies = [];
 
   // these static walls will not be rendered in this sprites example, see options
   World.add(world, [
-      Bodies.rectangle(500, h - 200, w, 5, options),
-      // Bodies.rectangle(w , 300, 50.5, 600.5 + 2 * offset, options),
-      // Bodies.rectangle(-offset, 300, 50.5, 600.5 + 2 * offset, options)
+     Bodies.rectangle(w/2, h + offset, w + 2 * offset, 10, options),
+     Bodies.rectangle(0, h/2, 10, h + 2 * offset, options),
+     Bodies.rectangle(w, h/2, 10, h + 2 * offset, options),
   ]);
 
   var stack = Composites.stack(-150, -1000, 20, 7, 50, 50, function(x, y, ix, iy) {
@@ -278,7 +283,7 @@ Example.sprites = function(w, h) {
   // fit the render viewport to the scene
   Render.lookAt(render, {
       min: { x: 0, y: 0 },
-      max: { x: 800, y: 600 }
+      max: { x: w, y: h }
   });
 
   // context for MatterTools.Demo
