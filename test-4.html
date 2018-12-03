@@ -29,6 +29,9 @@
         display: inline;
         padding: 1.1vw;
       }
+      .reverse {
+        font-size: 7vw;
+      }
     </style>
   </head>
   <body>
@@ -43,43 +46,69 @@
             } else {
               return '<div class="letter invisible">' + l + '</div>'
             }
-          }).join('')
+          }).join('');
         }
-        $('.wrap').append(createDom('with you, soon'));
-        function inAnimation() {
+        $('.wrap').html(createDom('with you, soon'));
+        // $('.wrap').addClass('reverse');
+        function inAnimation(option) {
           var aniName = 'bounceInDown'
+          var reverse = option.reverse;
           $('.wrap').append()
           var letters = $('.letter');
-          var count = -1;
+          var count =  reverse ? letters.length - 1 : -1;
           var interval = setInterval(function() {
-            if(count === letters.length) {
+            if((reverse && count === -1)|| count === letters.length) {
               clearInterval(interval);
               letters.removeClass('animated ' + aniName)
-              outAnimation();
+              outAnimation({
+                reverse: reverse
+              });
             }
-            count++;
-            $(letters[count]).removeClass('invisible').addClass('animated ' + aniName);
+            if(reverse){
+              $(letters[count]).removeClass('invisible').addClass('animated ' + aniName);
+              option.reverse ? count-- : count++
+            }else {
+              option.reverse ? count-- : count++
+              $(letters[count]).removeClass('invisible').addClass('animated ' + aniName);
+            }
+
           }, 200);
         }
-        inAnimation();
+        inAnimation({
+          reverse: false
+        });
 
-        function outAnimation() {
+        function outAnimation(option) {
           var aniName = 'bounceOutUp'
+          var reverse = option.reverse;
           var letters = $('.letter');
-          var count = -1;
+          var count = reverse ? letters.length - 1 : -1;;
           var interval = setInterval(function() {
-            if(count === letters.length) {
+            if((reverse && count === -1)|| count === letters.length) {
               clearInterval(interval);
               letters.removeClass('animated ' + aniName ).addClass('invisible');
-              cycleComplete();
+              cycleComplete(option);
             }
-            count++;
-            $(letters[count]).removeClass('invisible').addClass('animated ' + aniName);
+            if(reverse){
+              $(letters[count]).removeClass('invisible').addClass('animated ' + aniName);
+              option.reverse ? count-- : count++
+            }else {
+              option.reverse ? count-- : count++
+              $(letters[count]).removeClass('invisible').addClass('animated ' + aniName);
+            }
           }, 200);
         }
-
-        function cycleComplete() {
-          inAnimation();
+        function cycleComplete(option) {
+          if(option.reverse) {
+            $('.wrap').html(createDom('with you, soon'));
+            $('.wrap').removeClass('reverse');
+          } else {
+            $('.wrap').html(createDom('ودنا نقولبس احنا على وصول'));
+            $('.wrap').addClass('reverse');
+          }
+          inAnimation({
+            reverse: !option.reverse
+          });
         }
       })
     </script>
