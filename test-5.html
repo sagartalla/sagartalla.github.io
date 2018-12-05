@@ -9,6 +9,10 @@
       overflow: hidden;
     }
 
+    .white section {
+      background-color: #fff;
+    }
+
     section {
       position: absolute;
       width: 100%;
@@ -229,6 +233,9 @@
       font-family: sans-serif;
     }
 
+    .white h2 {
+      color: #000;
+    }
 
     /************************************************/
     .img-12, .img-14, .img-15, .img-18, .img-23,
@@ -476,5 +483,12 @@
       <div><span class="img-32"></span></div>
     </div>
 	</section>
+  <script>
+    (function(){
+      if (Math.random() > 0.5) {
+        document.getElementsByTagName('body')[0].classList.add('white')
+      }
+    }())
+  </script>
 </body>
 </html>
